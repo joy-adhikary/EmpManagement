@@ -1,9 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-
-# Create your views here.
-
 @api_view(['GET','POST'])
 
 def index(request):
@@ -16,17 +13,21 @@ def index(request):
             'Request type': request.method,
         }
         print("Yho, you heat Get method from admin")
-        return Response(Admin)
+        
+        #Getting queryParameter From url
+        query = request.GET.get('query')
+
+        print('Query Data is ==>', query)
+        return Response({'Admin': Admin, 'Requested Query': query })
+
     elif request.method=='POST':
-        Admin={
-            "Type":"Admin",
-            'Name': 'Joy Adhikary',
-            "Email":"admin@gmail.com",
-            "Password":"1234567890",
-            'Request type': request.method,
-        }
+
+        # getting put data from front end
+        post_content = request.data
+
         print("Yho, you heat Post method from admin")
-        return Response(Admin)
+        print(post_content)
+        return Response(post_content)
 
     else:
         return Response({"message": "Method not allowed"}, status=405)
