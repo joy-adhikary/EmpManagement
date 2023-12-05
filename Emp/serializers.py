@@ -1,14 +1,14 @@
 
 from rest_framework import serializers
-from .models import Admin
+from .models import Emp
 
 # Convert queryset ( database info ) to json format or vise-varsa 
 
-class AdminSerializers(serializers.ModelSerializer):
+class EMPSerializers(serializers.ModelSerializer):
 
 #  Kon model ke serialize korbo seita ei meta te bole dite hobe 
     class Meta:
-        model = Admin
+        model = Emp
         # show same selected fields
         fields = ['password', 'username','email']
 
