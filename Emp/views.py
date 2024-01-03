@@ -17,7 +17,7 @@ def Empindex(request):
             "password": "1234567890",
             'Request type': request.method,
         }
-        print("Yho, you heat Get method from EMP")
+        print("Yho, you hit Get method from EMP")
         return Response(EMP)
 
     elif request.method == 'POST':
@@ -38,8 +38,22 @@ def Empindex(request):
 
 # Using serializers
 
+@api_view(['GET', 'POST'])
 def EmIndexWithSerializer(request):
     if request.method == 'GET':
         data = Emp.objects.all()
+        # as we getting a query set 
         serializer = EMPSerializers(data, many=True)
         return Response(serializer.data)
+    
+
+    elif request.method == 'POST':
+        newData= request.data
+        # convert json to python obj
+        serializer = EMPSerializers(data=newData)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,"your data submitted")
+
+        return Response(serializer.errors)
+

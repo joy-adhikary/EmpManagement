@@ -12,7 +12,7 @@ def index(request):
             "password":"1234567890",
             'Request type': request.method,
         }
-        print("Yho, you heat Get method from admin")
+        print("Yho, you hit Get method from admin")
         
         #Getting queryParameter From url
         query = request.GET.get('query')
