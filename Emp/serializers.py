@@ -9,8 +9,8 @@ class EMPSerializers(serializers.ModelSerializer):
 #  Kon model ke serialize korbo seita ei meta te bole dite hobe 
     class Meta:
         model = Emp
-        # show same selected fields
-        fields = ['password', 'username','email']
+        # show some selected fields
+        # fields = ['password', 'username','email']
 
         # show all fileds 
         fields = '__all__'

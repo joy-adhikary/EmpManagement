@@ -10,10 +10,10 @@ class AdminSerializers(serializers.ModelSerializer):
     class Meta:
         model = Admin
         # show same selected fields
-        fields = ['password', 'username','email']
+        # fields = ['password', 'username','email']
 
         # show all fileds 
         fields = '__all__'
         
         # Exclude only name fields . mane amr kase 100 ta model fields ashe, tar majhe ami just name ta show korbo nah.
-        exclude= ['user_type']
+        # exclude= ['user_type']

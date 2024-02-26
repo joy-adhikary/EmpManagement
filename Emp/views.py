@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import status
 from .models import Emp
 from .serializers import EMPSerializers
 
@@ -7,7 +8,7 @@ from .serializers import EMPSerializers
 # Normal way
 
 @api_view(['GET', 'POST'])
-def Empindex(request):
+def empIndex(request):
     if request.method == 'GET':
         EMP = {
             "Type": "Employee",
@@ -21,16 +22,10 @@ def Empindex(request):
         return Response(EMP)
 
     elif request.method == 'POST':
-        EMP = {
-            "Type": "EMP",
-            'Name': 'Joy Adhikary',
-            'Deg': 'Soft. Eng',
-            "Email": "EMP@gmail.com",
-            "Password": "1234567890",
-            'Request type': request.method,
-        }
-        print("Yho, you heat Post method from EMP")
-        return Response(EMP)
+        post_content = request.data
+        print(post_content)
+        print("Yho, you hit Post method from EMP")
+        return Response({'Posted Content':post_content})
 
     else:
         return Response({"message": "Method not allowed"}, status=405)
@@ -39,10 +34,10 @@ def Empindex(request):
 # Using serializers
 
 @api_view(['GET', 'POST'])
-def EmIndexWithSerializer(request):
+def empStdIndex(request):
     if request.method == 'GET':
         data = Emp.objects.all()
-        # as we getting a query set 
+        # as we getting a query set or python obj
         serializer = EMPSerializers(data, many=True)
         return Response(serializer.data)
     
@@ -51,9 +46,11 @@ def EmIndexWithSerializer(request):
         newData= request.data
         # convert json to python obj
         serializer = EMPSerializers(data=newData)
+        # cheking  is it valid or not  
         if serializer.is_valid():
+            # saving it to the database
             serializer.save()
-            return Response(serializer.data,"your data submitted")
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors)
 
