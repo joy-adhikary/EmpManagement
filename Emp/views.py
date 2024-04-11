@@ -5,35 +5,7 @@ from .models import Emp
 from .serializers import EMPSerializers
 
 
-# Normal way
-
-@api_view(['GET', 'POST'])
-def empIndex(request):
-    if request.method == 'GET':
-        EMP = {
-            "Type": "Employee",
-            'Name': 'Joy Adhikary',
-            'Deg': 'Soft. Eng',
-            "email": "Emp@gmail.com",
-            "password": "1234567890",
-            'Request type': request.method,
-        }
-        print("Yho, you hit Get method from EMP")
-        return Response(EMP)
-
-    elif request.method == 'POST':
-        post_content = request.data
-        print(post_content)
-        print("Yho, you hit Post method from EMP")
-        return Response({'Posted Content':post_content})
-
-    else:
-        return Response({"message": "Method not allowed"}, status=405)
-
-
-# Using serializers
-
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def empStdIndex(request):
     if request.method == 'GET':
         data = Emp.objects.all()
@@ -53,4 +25,24 @@ def empStdIndex(request):
             return Response(serializer.data,status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors)
+    
+    elif request.method == 'PUT':
+        put_content = request.data
+        old_data = EMPSerializers.objects.get(id = put_content['id'])
+        # update existing data
+        serialized_data = EMPSerializers(old_data,data = put_content)
+        if serialized_data.is_valid():
+            serialized_data.save()
+            return Response({"massege" : "Data Updated Sucessfully"}, status=status.HTTP_200_OK)
+        
+        return Response({"Message": serialized_data.errors}, status=status.HTTP_406_NOT_ACCEPTABLE)
+    
+    else:
+        deleted_id= request.data['id']
+        deleted_data = Emp.objects.get(id=deleted_id)
+        deleted_data.delete()
+        return Response({"msg": " Data has been deleted"}, status=status.HTTP_200_OK)
+        
+
+
 

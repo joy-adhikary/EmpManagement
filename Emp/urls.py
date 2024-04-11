@@ -1,7 +1,6 @@
 from django.urls import path
-from Emp.views import empIndex,empStdIndex
+from Emp.views import empStdIndex
 
 urlpatterns = [
-    path("Empn/",empIndex),
     path("EmpSeri/",empStdIndex),
 ]

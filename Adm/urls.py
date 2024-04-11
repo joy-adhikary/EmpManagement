@@ -1,7 +1,6 @@
 from django.urls import path
-from Adm.views import admIndex,admStdIndex
+from Adm.views import admStdIndex
 
 urlpatterns = [
-    path("Admn/",admIndex),
-    path("AdmSeri/",admStdIndex),
+    path("AdmSeri/",admStdIndex)
 ]

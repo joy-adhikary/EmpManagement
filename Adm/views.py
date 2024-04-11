@@ -4,37 +4,6 @@ from .models import Admin
 from rest_framework import status
 from .serializer import AdminSerializers
 
-
-@api_view(['GET', 'POST'])
-def admIndex(request):
-    if request.method == 'GET':
-        Admin = {
-            "Type": "Admin",
-            'Name': 'Joy Adhikary',
-            "email": "admin@gmail.com",
-            "password": "1234567890",
-            'Request type': request.method,
-        }
-        print("Yho, you hit Get method from admin")
-
-        # Getting queryParameter From url
-        query = request.GET.get('q')
-
-        print('Query Data is ==>', query)
-        return Response({'Admin': Admin, 'Requested Query': query})
-
-    elif request.method == 'POST':
-
-        # getting put data from front end
-        post_content = request.data
-
-        print("Yho, you hit Post method from admin")
-        print(post_content)
-        return Response(post_content)
-
-    else:
-        return Response({"message": "Method not allowed"}, status=405)
-
 #  standard methods to CRUD datas
 
 @api_view(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
