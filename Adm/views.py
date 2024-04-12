@@ -10,9 +10,14 @@ from .serializer import AdminSerializers
 
 def admStdIndex(request):
     if request.method == 'GET':
-        data = Admin.objects.all()
-        # print("all data", data)
+
+        #! **request.query_params.dict() eite pura query param kei as it is search kore, as a result jkno query e kaj korbe jodi data thake 
+        if request.query_params:
+            data = Admin.objects.filter(**request.query_params.dict())
+        else:
+            data = Admin.objects.all()
         serialized_data = AdminSerializers(data, many=True)
+        print(serialized_data)
         return Response(serialized_data.data)
 
 

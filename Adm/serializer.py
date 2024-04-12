@@ -17,3 +17,38 @@ class AdminSerializers(serializers.ModelSerializer):
         
         # Exclude only name fields . mane amr kase 100 ta model fields ashe, tar majhe ami just name ta show korbo nah.
         # exclude= ['user_type']
+
+        #  jodi kono foreignKey add kora thake tahole eita diye oi foreignkey er obj gular full info pauya jabe ( for example : 
+        #  data = { 'name': 'x','age':{'age':'1', 'dob':'12-2-2'}}) ei format a pauya jabe
+        depth = 1 
+
+
+
+                                                #  validation part 
+
+#  validation function ke 2 vabe likha jai. 
+#! First one hocce validate_nameOfTheType. For example ( validate_name, validate_age, validate_gender)
+#! Second one hocce just validate likhe oitar majhe if condition diye akta akta kore validate kora. 
+
+# example 1 ( be careful with naming here because it's not only a function name , it's actually an exisiting data )
+
+    # def validate_user_name(self, username):
+    #     if username.lower() != 'admin':
+    #         raise serializers.ValidationError('User type must be admin')
+        
+    #     return username
+    
+
+# example 2 ( secure way to do it )
+
+    def validate(self,data):
+        # userType validation 
+        if data['user_type'].lower() != 'admin':
+            raise serializers.ValidationError('User type must be admin')
+        
+        # password validation
+        if len(data['password']) < 5 :
+            raise serializers.ValidationError('Password must be at least 5 characters')
+        
+        return data
+    

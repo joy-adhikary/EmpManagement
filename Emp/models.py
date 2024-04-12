@@ -11,7 +11,7 @@ class Emp(models.Model):
     user_type = models.CharField(max_length=20, default='')
 
     def __str__(self):
-        return self.username,self.user_type
+        return self.username
     
 
 #  jodi model a kono kisu change kori tahole python3 manage.py makemigrations appname dite hbe
