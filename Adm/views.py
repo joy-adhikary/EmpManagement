@@ -1,6 +1,9 @@
+from django.db.models import OuterRef
+from django.db.models import Subquery
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import Admin
+from Emp.models import LinkEmpWithAdmin
 from rest_framework import status
 from .serializer import AdminSerializers
 
@@ -13,11 +16,21 @@ def admStdIndex(request):
 
         #! **request.query_params.dict() eite pura query param kei as it is search kore, as a result jkno query e kaj korbe jodi data thake 
         if request.query_params:
-            data = Admin.objects.filter(**request.query_params.dict())
+            datas = Admin.objects.filter(**request.query_params.dict())
         else:
-            data = Admin.objects.all()
-        serialized_data = AdminSerializers(data, many=True)
-        print(serialized_data)
+            datas = Admin.objects.all()
+
+        # filter out emp null values using ( __isnull )
+        datas = datas.filter(emp__isnull = False)
+
+        # eitar maddhome ami onno aktam model theke subquery kore data ene ei model er field ke set kore dicchi.
+        salary_subquery = LinkEmpWithAdmin.objects.filter(emp_id=OuterRef('id')).values('salary')[:1]
+        datas = datas.annotate(salarys=Subquery(salary_subquery))
+
+        for data in datas:
+            data.salary= data.salarys
+
+        serialized_data = AdminSerializers(datas, many=True)
         return Response(serialized_data.data)
 
 

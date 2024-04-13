@@ -17,3 +17,12 @@ class EMPSerializers(serializers.ModelSerializer):
         
         # Exclude only name fields . mane amr kase 100 ta model fields ashe, tar majhe ami just name ta show korbo nah.
         # exclude= ['user_type']
+
+
+
+class EMPSerializers2(serializers.ModelSerializer):
+
+    class Meta:
+        model = Emp
+        fields = ['user_type','username']
+    

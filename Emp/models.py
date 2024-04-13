@@ -15,3 +15,17 @@ class Emp(models.Model):
     
 
 #  jodi model a kono kisu change kori tahole python3 manage.py makemigrations appname dite hbe
+
+
+
+# creating another model for linking data from emp to admin 
+
+class LinkEmpWithAdmin(models.Model):
+    user_name = models.CharField(max_length=502)
+    position = models.CharField(max_length=502,default='')
+    salary = models.IntegerField()
+    emp_id = models.IntegerField()
+
+    def __str__(self):
+        return self.user_name
+

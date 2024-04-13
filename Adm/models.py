@@ -9,6 +9,7 @@ class Admin(models.Model):
     user_type = models.CharField(max_length=20)
     # foreignKey te always full model ke define korty hoi. 
     emp = models.ForeignKey(Emp, on_delete=models.CASCADE, related_name='emp', blank=True, null=True)
+    salary = models.IntegerField(blank = True, null=True)
 
     
     def __str__(self):

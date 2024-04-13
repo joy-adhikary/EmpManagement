@@ -1,10 +1,16 @@
 
 from rest_framework import serializers
 from .models import Admin
+from Emp.serializers import EMPSerializers2
+from Emp.models import Emp
 
 # Convert queryset ( database info ) to json format or vise-varsa 
 
 class AdminSerializers(serializers.ModelSerializer):
+    # to serialize emp data 
+    emp = EMPSerializers2()
+    # add an extra field into the admin model called emp_userRole_using_serializer
+    emp_userRole_using_serializer = serializers.SerializerMethodField()
 
 #  Kon model ke serialize korbo seita ei meta te bole dite hobe 
     class Meta:
@@ -52,3 +58,13 @@ class AdminSerializers(serializers.ModelSerializer):
         
         return data
     
+    def get_emp_userRole_using_serializer(self, data):
+
+        # using filter 
+        # user_info = Emp.objects.filter(id = data.emp.id)
+        # return {'emp_role': user_info[0].role}
+
+        # using get method  
+        user_info = Emp.objects.get(id = data.emp.id)
+
+        return {'emp_role': user_info.role}
