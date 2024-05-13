@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework import status
 from .models import Emp
 from .serializers import EMPSerializers
@@ -45,4 +46,17 @@ def empStdIndex(request):
         
 
 
+class empApiviewClass(APIView):
+    
+    def get(self, request):
+        return Response({"msg": "This is get test"})
+    
+    def post(self, request):
+        return Response({"msg": "This is post test"})
+    
+    def put(self, request):
+        return Response({"msg": "This is put test"})
+    
+    def delete(self, request):
+        return Response({"msg": "This is delete test"})
 

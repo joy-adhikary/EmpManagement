@@ -66,5 +66,12 @@ class AdminSerializers(serializers.ModelSerializer):
 
         # using get method  
         user_info = Emp.objects.get(id = data.emp.id)
-
         return {'emp_role': user_info.role}
+
+
+    # def create(self, validated_data):
+    #     admins_data = validated_data.pop('emp')
+    #     admin = Admin.objects.create(**validated_data)
+    #     for admin_data in admins_data:
+    #         Admin.emp.create (**admin_data)
+    #     return admin
