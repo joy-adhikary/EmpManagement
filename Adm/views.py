@@ -7,6 +7,8 @@ from .models import Admin
 from Emp.models import LinkEmpWithAdmin
 from rest_framework import status
 from .serializer import AdminSerializers
+from rest_framework import routers, serializers, viewsets
+
 
 
                                             #? Using api view decorator
@@ -158,3 +160,11 @@ class AdminClass(APIView):
         updatedObj = Admin.objects.get(id=request_data['id'])
         updatedObj.delete()
         return Response({"Message": "Entity deleted :)"}, status=status.HTTP_200_OK)
+
+
+# Django by default curd api deal kore. ModelViewSet er maddhome . This is just for idea it is not the best practice. 
+
+
+class ModelViewSetExample(viewsets.ModelViewSet):
+    serializer_class = AdminSerializers;
+    queryset = Admin.objects.all()
