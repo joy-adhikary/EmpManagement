@@ -168,3 +168,4 @@ class AdminClass(APIView):
 class ModelViewSetExample(viewsets.ModelViewSet):
     serializer_class = AdminSerializers;
     queryset = Admin.objects.all()
+

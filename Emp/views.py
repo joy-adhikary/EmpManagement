@@ -3,7 +3,9 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import Emp
-from .serializers import EMPSerializers
+from .serializers import EMPSerializers, RegisterSerializers
+
+from django.contrib.auth.models import User
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
@@ -60,3 +62,24 @@ class empApiviewClass(APIView):
     def delete(self, request):
         return Response({"msg": "This is delete test"})
 
+
+class RegisterUser(APIView):
+    def post(self, request):
+        data = request.data 
+        registerSerializer = RegisterSerializers(data = data)
+
+        # if data are not correctly provide 
+        if not registerSerializer.is_valid():
+            return Response({
+                'status': False,
+                'message': registerSerializer.errors
+            }, status.HTTP_400_BAD_REQUEST)
+        
+        registerSerializer.save()
+
+        return Response({
+            'status': True,
+            'message': 'User Registered Successfully',
+            'data': registerSerializer.data,
+            }, status.HTTP_201_CREATED)
+        
