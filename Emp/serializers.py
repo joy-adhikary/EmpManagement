@@ -59,7 +59,24 @@ class RegisterSerializers(serializers.Serializer):
             email = validated_data['email'])
         user.set_password(validated_data['password'])
 
+        # save this user into DB
+        user.save();
+
         return validated_data
             
 
 
+
+class LoginSerializers(serializers.Serializer):
+
+    password = serializers.CharField()
+    username = serializers.CharField()
+
+    # def validate(self, request):
+
+    #     # check if Email exists or not   
+    #     if request['username']:
+    #         if User.objects.filter(username=request['username']).exists():
+    #             return request
+            
+    #         raise serializers.ValidationError({'Massage': 'Ops!!! User not exists'})

@@ -3,10 +3,10 @@ from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import Emp
-from .serializers import EMPSerializers, RegisterSerializers
+from .serializers import EMPSerializers, RegisterSerializers, LoginSerializers
 
-from django.contrib.auth.models import User
-
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def empStdIndex(request):
@@ -83,3 +83,35 @@ class RegisterUser(APIView):
             'data': registerSerializer.data,
             }, status.HTTP_201_CREATED)
         
+
+
+class LoginApi(APIView):
+    def post(self, request):
+        data = request.data
+        loginSerializers = LoginSerializers(data = data)
+
+        # if data are not correctly provide 
+        if not loginSerializers.is_valid():
+            return Response({
+                'status': False,
+                'message': loginSerializers.errors
+            }, status.HTTP_400_BAD_REQUEST)
+        
+        # it helps you to check username and password is correct or not , if correct then it will return a user object 
+        user = authenticate(
+            username = loginSerializers.data['username'],
+            password = loginSerializers.data['password'],
+        )
+        if not user:
+            return Response({
+                'status': False,
+                'message': 'invalid user'
+            }, status.HTTP_400_BAD_REQUEST)
+
+        token, _ = Token.objects.get_or_create(user=user)
+
+        return Response({
+            'status': True,
+            'message': 'User Login Successfully',
+            'Token': str(token),
+            }, status.HTTP_200_OK)
