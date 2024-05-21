@@ -7,6 +7,8 @@ from .serializers import EMPSerializers, RegisterSerializers, LoginSerializers
 
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def empStdIndex(request):
@@ -49,9 +51,22 @@ def empStdIndex(request):
 
 
 class empApiviewClass(APIView):
+
+    # Only accessable for those user who have valid token
+
+    # authentication calss konta, seita define kore dicchi 
+    authentication_classes = [TokenAuthentication]
+    
+    # ebar check korbo authenticated user ki nah 
+    permission_classes = [IsAuthenticated]
+
+
     
     def get(self, request):
-        return Response({"msg": "This is get test"})
+        # as we getting a query set or python obj
+        data = Emp.objects.all()
+        serializer = EMPSerializers(data, many=True)
+        return Response(serializer.data)
     
     def post(self, request):
         return Response({"msg": "This is post test"})
@@ -102,6 +117,7 @@ class LoginApi(APIView):
             username = loginSerializers.data['username'],
             password = loginSerializers.data['password'],
         )
+
         if not user:
             return Response({
                 'status': False,

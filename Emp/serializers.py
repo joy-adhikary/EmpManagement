@@ -52,11 +52,14 @@ class RegisterSerializers(serializers.Serializer):
     
     def create(self, validated_data):
         
-        print("validated Data :" ,validated_data)
+        # print("validated Data :" ,validated_data)
 
+        # Creating username , model and password user object for the user table
         user = User.objects.create(
             username = validated_data['username'],
-            email = validated_data['email'])
+            email = validated_data['email']
+            )
+        
         user.set_password(validated_data['password'])
 
         # save this user into DB

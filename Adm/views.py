@@ -143,11 +143,11 @@ class AdminClass(APIView):
     
     def patch(self, request):
         patch_content = request.data
-        print("PATCH content =>", patch_content)
+        # print("PATCH content =>", patch_content)
 
         updatedObj = Admin.objects.get(id = patch_content['id'])
         serialized_data = AdminSerializers(updatedObj,data = patch_content, partial = True)
-        print("Updated object", updatedObj)
+        # print("Updated object", updatedObj)
 
         if serialized_data.is_valid():
             serialized_data.save()
