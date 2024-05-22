@@ -8,7 +8,7 @@ router.register(r'AdminMVS', ModelViewSetExample, basename='AdminMVS')
 urlpatterns =  router.urls
 
 urlpatterns = [
-    # path("AdmSeri/",admStdIndex)
+    # path("AdmSeri/",admStdIndex),
     path('', include(router.urls)),
     path("AdmSeri/",AdminClass.as_view())
 ]

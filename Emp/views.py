@@ -6,6 +6,7 @@ from .models import Emp
 from .serializers import EMPSerializers, RegisterSerializers, LoginSerializers
 
 from django.contrib.auth import authenticate
+from django.core.paginator import Paginator
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
@@ -63,10 +64,27 @@ class empApiviewClass(APIView):
 
     
     def get(self, request):
-        # as we getting a query set or python obj
-        data = Emp.objects.all()
-        serializer = EMPSerializers(data, many=True)
-        return Response(serializer.data)
+        # if actual page number is smaller then the query page number then through an error 
+        try: 
+            # as we getting a query set or python obj
+            data = Emp.objects.all()
+
+            #  add pagination 
+            page_number = request.GET.get('page',1)
+            page_size = 3
+            # 1st serialize all data then paginate those serialized data 
+            serialized_data = EMPSerializers(data, many=True)
+        
+            paginator = Paginator(serialized_data.data, page_size)
+            
+            serializer = EMPSerializers(paginator.page(page_number), many=True)
+            return Response(serializer.data)
+    
+        except Exception as e:
+                return Response({
+                    'status': False,
+                    'message': 'Invalid page number'
+                }, status.HTTP_400_BAD_REQUEST)
     
     def post(self, request):
         return Response({"msg": "This is post test"})
