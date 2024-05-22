@@ -70,11 +70,10 @@ class empApiviewClass(APIView):
             data = Emp.objects.all()
 
             #  add pagination 
-            page_number = request.GET.get('page',1)
+            page_number = request.GET.get('page',1) # setting page_number = 1 by default if no page_number is added 
             page_size = 3
             # 1st serialize all data then paginate those serialized data 
             serialized_data = EMPSerializers(data, many=True)
-        
             paginator = Paginator(serialized_data.data, page_size)
             
             serializer = EMPSerializers(paginator.page(page_number), many=True)
